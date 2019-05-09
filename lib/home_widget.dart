@@ -12,8 +12,8 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   // Widgets we want to render based on the tab (2D Array)
   final List<Widget> _children = [
-    HomeBodyWidget(Colors.cyan),
-    HistoryBodyWidget(Colors.amber),
+    HomeBodyWidget(Colors.cyan), // home_body_widget.dart
+    HistoryBodyWidget(Colors.amber), // History_body_widget.dart
   ];
 
   // Set _currentIndex to index tapped in bottom nav bar

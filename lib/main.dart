@@ -4,6 +4,7 @@ import 'package:time_scribe/home_widget.dart';
 ///  [References]
 ///  https://willowtreeapps.com/ideas/how-to-use-flutter-to-build-an-app-with-bottom-navigation
 ///  https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2/#8
+///  https://github.com/bizz84/stopwatch-flutter/blob/master/lib/timer_page.dart
 
 void main() => runApp(TimeScribe());
 
@@ -13,7 +14,7 @@ class TimeScribe extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Time Scribe',
-      home: HomePage(),
+      home: HomePage(), // home_widget.dart
     );
   }
 }
