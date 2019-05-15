@@ -10,10 +10,13 @@ class _HomePageState extends State<HomePage> {
 
   // Current tab index
   int _currentIndex = 0;
+  static HomeBodyWidget _homeBodyWidget = new HomeBodyWidget();
+  static HistoryBodyWidget _historyBodyWidget = new HistoryBodyWidget(Colors.lightBlue);
+
   // Widgets we want to render based on the tab (2D Array)
   final List<Widget> _children = [
-    HomeBodyWidget(), // home_body_widget.dart
-    HistoryBodyWidget(Colors.amber), // History_body_widget.dart
+    _homeBodyWidget, // home_body_widget.dart
+    _historyBodyWidget, // History_body_widget.dart
   ];
 
   // Set _currentIndex to index tapped in bottom nav bar
@@ -27,10 +30,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold (
       appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
           title: Text('Time Scribe')
       ),
       // Body is the children being rendered based on selected tab
       body: _children[_currentIndex],
+      floatingActionButton: _currentIndex == 0 ? FloatingActionButton(
+        onPressed: () {
+          // Open Dialogue to add an activity
+        },
+        backgroundColor: Colors.lightBlue,
+        child: Icon(Icons.add),
+      ) : SizedBox.shrink(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         // the index of the active tab
