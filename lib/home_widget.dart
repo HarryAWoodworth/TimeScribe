@@ -35,13 +35,6 @@ class _HomePageState extends State<HomePage> {
       ),
       // Body is the children being rendered based on selected tab
       body: _children[_currentIndex],
-      floatingActionButton: _currentIndex == 0 ? FloatingActionButton(
-        onPressed: () {
-          // Open Dialogue to add an activity
-        },
-        backgroundColor: Colors.lightBlue,
-        child: Icon(Icons.add),
-      ) : SizedBox.shrink(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         // the index of the active tab

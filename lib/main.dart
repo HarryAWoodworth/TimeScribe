@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:time_scribe/home_widget.dart';
 import 'dart:async';
 
-
 ///  [References]
 ///  https://willowtreeapps.com/ideas/how-to-use-flutter-to-build-an-app-with-bottom-navigation
 ///  https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2/#8
 ///  https://github.com/bizz84/stopwatch-flutter/blob/master/lib/timer_page.dart
 ///  https://stackoverflow.com/questions/53228993/how-to-implement-persistent-stopwatch-in-flutter
+///  https://github.com/RatelHub/rflutter_alert
+///  https://flutter.dev/docs/development/ui/interactive
+///  https://stackoverflow.com/questions/44489804/show-hide-widgets-on-flutter-programmatically
+///  https://stackoverflow.com/questions/49713189/how-to-use-conditional-statement-within-child-attribute-of-a-flutter-widget-cen
 
 void main() {
   final timerService = TimerService();

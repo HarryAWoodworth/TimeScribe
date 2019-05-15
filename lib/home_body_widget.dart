@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:time_scribe/main.dart';
 
 class HomeBodyWidget extends StatefulWidget {
+  static HomeBodyWidgetState of(BuildContext context) => context.ancestorStateOfType(const TypeMatcher<HomeBodyWidgetState>());
   HomeBodyWidgetState createState() => new HomeBodyWidgetState();
 }
 
@@ -10,9 +12,11 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
   Icon _currActIcon = null;
   TimerService timerService = null;
   bool _activeActivity = false;
+  BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     timerService = TimerService.of(context);
     return Column(
       children: <Widget>[
@@ -39,7 +43,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Text('${timerService.currentDuration.inSeconds}'),
+                               Text('${timerService.currentDuration.inSeconds}'),
                               FlatButton(
                                 color: Colors.white,
                                 onPressed: !timerService.isRunning
@@ -75,6 +79,13 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
         Wrap(
           children: gridView(),
         ),
+        FloatingActionButton(
+          onPressed: () {
+            addActivityAlert();
+          },
+          backgroundColor: Colors.lightBlue,
+          child: Icon(Icons.add),
+        ),
       ],
     );
   }
@@ -104,6 +115,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
     );
   }
 
+  /// Change the top row to represent the activity selected
   void _changeActivity(Icon icon, String name) {
     setState(() {
       _currActIcon = icon;
@@ -113,6 +125,15 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
     // End timer
     // Save timer time to whatever data holder
   }
+
+  void addActivityAlert(){
+    Alert(
+      context: context,
+      type: AlertType.info,
+      title: "Add a new Activity",
+    ).show();
+  }
+
 }
 
 // String array of names so no name duplicates
