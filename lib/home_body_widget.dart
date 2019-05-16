@@ -3,6 +3,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:time_scribe/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:random_string/random_string.dart' as random;
+
 
 class HomeBodyWidget extends StatefulWidget {
   static HomeBodyWidgetState of(BuildContext context) =>
@@ -52,10 +54,9 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                       AnimatedBuilder(
                           animation: timerService,
                           builder: (context, child) {
-                            return Row(
-                              children: <Widget>[
-                                Text('${timerService.currentDuration.inSeconds}'),
-                                FlatButton(
+                            return Row(children: <Widget>[
+                              Text('${timerService.currentDuration.inSeconds}'),
+                              FlatButton(
                                 color: Colors.lightBlue,
                                 onPressed: !timerService.isRunning
                                     ? timerService.start
@@ -63,9 +64,8 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                                 child: Icon(!timerService.isRunning
                                     ? Icons.play_arrow
                                     : Icons.stop),
-                                ),
-                            ]
-                            );
+                              ),
+                            ]);
                           }),
                     ],
                   )
@@ -97,20 +97,42 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
             backgroundColor: Colors.lightBlue,
             child: Icon(Icons.add),
           ),
+          FloatingActionButton(
+            onPressed: () {
+              _clear();
+            },
+            backgroundColor: Colors.red,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              _read();
+            },
+            backgroundColor: Colors.blue,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              _save();
+            },
+            backgroundColor: Colors.green,
+          ),
         ],
       ),
     );
   }
 
+  /// Create the list of buttons using _activityList to be viewed in the grid
   List<Widget> gridView() {
     // Loop through saved data and construct RaisedButtons
     List<Widget> retList = new List<Widget>();
+    _read();
+    debugPrint("LENGTH OF THE _ACTIVITYLIST IS ${_activityList.length}");
     for (ButtonPair p in _activityList) {
       retList.add(newButton(new Icon(p.iconData), p.name));
     }
     return retList;
   }
 
+  /// Return a new button from the icon and name of an activity
   Widget newButton(Icon icon, String name) {
     return new RaisedButton(
       child: Column(
@@ -135,7 +157,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       _activeActivity = true;
     });
     // End timer
-    if(timerService.isRunning) {
+    if (timerService.isRunning) {
       timerService.stop();
     }
     // Save time in var
@@ -143,17 +165,21 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
     // Save timer time to whatever data holder
   }
 
-  addActivity(IconData iconData, String name) {
+  /// Add an activity, checking for duplicates
+  addNewActivity(IconData iconData, String name) {
     if (!_namesList.contains(name)) {
       _namesList.add(name);
       setState(() {
-        _activityList.add(new ButtonPair(iconData, name));
+        _activityList.add(new ButtonPair(iconData, name, 0));
       });
+      _save();
     }
   }
 
+  /// Show an alert using rflutter_alert that allows the user to
+  /// input a name in a textField and select an icon from a flutter_picker
+  /// to create a new activity that is added to the activity list
   addActivityAlert() {
-
     var alertStyle = AlertStyle(
       animationType: AnimationType.fromBottom,
       isCloseButton: false,
@@ -202,7 +228,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       buttons: [
         DialogButton(
           onPressed: () {
-            addActivity(_newIcon.icon, _newName);
+            addNewActivity(_newIcon.icon, _newName);
             Navigator.pop(context);
           },
           child: Text(
@@ -214,6 +240,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
     ).show();
   }
 
+  /// Show a Picker with painstakingly hand-picked icons
   showPicker() {
     Picker(
       adapter: PickerDataAdapter(data: [
@@ -366,14 +393,61 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       },
     ).showDialog(_scaffoldKey.currentContext);
   }
+
+  /// Read in the saved preferences (activities) and construct ButtonPairs to
+  /// add to _activityList, and add names to _namesList
+  _read() async {
+    if(_activityList.isNotEmpty) return;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int size = prefs.getInt("Activity_list_size") ?? 0;
+    for(int counter = 0; counter < size; counter++) {
+      addActivityString(prefs.getString("ACTIVITY::$counter"));
+    }
+    debugPrint("READING!!!!!!!!!");
+  }
+
+  addActivityString(String key) {
+    debugPrint("READING KEY: $key");
+    var separate = key.split('*');
+    int iconCode = int.parse(separate.elementAt(0));
+    String name = separate.elementAt(1);
+    int time = int.parse(separate.elementAt(2));
+    setState(() {
+      _activityList.add(new ButtonPair(new IconData(iconCode), name, time));
+    });
+  }
+
+  _save() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("Activity_list_size",_activityList.length);
+    int counter = 0;
+    for(ButtonPair p in _activityList) {
+      int iconCode = p.iconData.codePoint;
+      String name = p.name;
+      int time = p.time;
+      String combinedString = "$iconCode*$name*$time";
+      String key = "ACTIVITY::$counter";
+      prefs.setString(key,combinedString);
+      counter++;
+      debugPrint("Saving Activity with string $combinedString and key $key");
+    }
+    debugPrint("SAVING!!!!!!!!!");
+  }
+
+  void _clear() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.clear();
+  }
 }
 
 class ButtonPair {
   IconData iconData;
   String name;
-  ButtonPair(IconData _iconData, String _name) {
+  int time = 0;
+  ButtonPair(IconData _iconData, String _name, int _time) {
     iconData = _iconData;
     name = _name;
+    time = _time;
   }
 }
 

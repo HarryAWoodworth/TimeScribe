@@ -17,7 +17,16 @@ import 'dart:async';
 ///  https://medium.com/flutter-community/a-deep-dive-into-flutter-textfields-f0e676aaab7a
 ///  https://stackoverflow.com/questions/44053363/flutter-padding-for-all-widgets
 ///  https://stackoverflow.com/questions/52774921/space-between-columns-children-in-flutter
-///  https://stackoverflow.com/questions/52774921/space-between-columns-children-in-flutter
+///  https://pusher.com/tutorials/local-data-flutter
+///  https://github.com/dart-lang/site-www/issues/736
+///  https://docs.flutter.io/flutter/widgets/IconData-class.html
+///  https://medium.com/flutter-community/shared-preferences-how-to-save-flutter-application-settings-and-user-preferences-for-later-554d08671ae9
+///  https://stackoverflow.com/questions/16255621/dart-string-comparator
+///  https://api.dartlang.org/stable/2.3.0/dart-core/String/split.html
+///  https://pub.dev/packages/random_string#-readme-tab-
+///  https://stackoverflow.com/questions/46639721/how-to-maintain-order-of-insertion-to-shared-preferences
+///  https://api.dartlang.org/stable/2.3.0/dart-core/Iterator-class.html
+///  https://stackoverflow.com/questions/13167496/how-do-i-parse-a-string-into-a-number-with-dart
 
 void main() {
   final timerService = TimerService();

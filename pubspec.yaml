@@ -24,6 +24,7 @@ dependencies:
     git: git://github.com/yangyxd/flutter_picker.git
   cupertino_icons: ^0.1.2
   shared_preferences: ^0.4.3
+  random_string: ^0.0.2
 
 
 dev_dependencies:
