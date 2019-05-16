@@ -15,7 +15,6 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
   Icon _currActIcon = null;
   TimerService timerService = null;
   bool _activeActivity = false;
-  BuildContext _context;
 
   // For adding activities
   List<ButtonPair> _activityList = new List();
@@ -28,7 +27,6 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
     timerService = TimerService.of(context);
     return Scaffold(
       key: _scaffoldKey,
@@ -178,6 +176,12 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
           SizedBox(height: 20),
           Text("Select Name:"),
           TextField(
+            textCapitalization: TextCapitalization.words,
+            textAlign: TextAlign.center,
+            maxLength: 15,
+            maxLines: 1,
+            autocorrect: true,
+            autofocus: true,
             onChanged: (text) {
               _newName = text;
             },
