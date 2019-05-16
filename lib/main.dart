@@ -11,6 +11,13 @@ import 'dart:async';
 ///  https://flutter.dev/docs/development/ui/interactive
 ///  https://stackoverflow.com/questions/44489804/show-hide-widgets-on-flutter-programmatically
 ///  https://stackoverflow.com/questions/49713189/how-to-use-conditional-statement-within-child-attribute-of-a-flutter-widget-cen
+///  https://material.io/tools/icons/?icon=person_pin_circle&style=baseline
+///  https://github.com/yangyxd/flutter_picker/blob/master/example/lib/main.dart
+///  https://pub.dev/packages/flutter_picker#-readme-tab-
+///  https://medium.com/flutter-community/a-deep-dive-into-flutter-textfields-f0e676aaab7a
+///  https://stackoverflow.com/questions/44053363/flutter-padding-for-all-widgets
+///  https://stackoverflow.com/questions/52774921/space-between-columns-children-in-flutter
+///  https://stackoverflow.com/questions/52774921/space-between-columns-children-in-flutter
 
 void main() {
   final timerService = TimerService();
