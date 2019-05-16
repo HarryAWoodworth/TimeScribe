@@ -51,18 +51,22 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                               : Text(_currActName),
                         ],
                       ),
-                      Text('${timerService.currentDuration.inSeconds}'),
                       AnimatedBuilder(
                           animation: timerService,
                           builder: (context, child) {
-                            return FlatButton(
-                              color: Colors.lightBlue,
-                              onPressed: !timerService.isRunning
-                                  ? timerService.start
-                                  : timerService.stop,
-                              child: Icon(!timerService.isRunning
-                                  ? Icons.play_arrow
-                                  : Icons.stop),
+                            return Row(
+                              children: <Widget>[
+                                Text('${timerService.currentDuration.inSeconds}'),
+                                FlatButton(
+                                color: Colors.lightBlue,
+                                onPressed: !timerService.isRunning
+                                    ? timerService.start
+                                    : timerService.stop,
+                                child: Icon(!timerService.isRunning
+                                    ? Icons.play_arrow
+                                    : Icons.stop),
+                                ),
+                            ]
                             );
                           }),
                     ],
@@ -133,6 +137,11 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       _activeActivity = true;
     });
     // End timer
+    if(timerService.isRunning) {
+      timerService.stop();
+    }
+    // Save time in var
+    timerService.reset();
     // Save timer time to whatever data holder
   }
 
@@ -190,6 +199,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
         DialogButton(
           onPressed: () {
             addActivity(_newIcon.icon, _newName);
+            Navigator.pop(context);
           },
           child: Text(
             "ADD ACTIVITY",
