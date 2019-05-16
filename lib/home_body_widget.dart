@@ -161,7 +161,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       isCloseButton: false,
       isOverlayTapDismiss: false,
       alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0.0),
+        borderRadius: BorderRadius.circular(50.0),
         side: BorderSide(
           color: Colors.lightBlue,
         ),
