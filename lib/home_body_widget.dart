@@ -131,6 +131,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
       context: context,
       type: AlertType.info,
       title: "Add a new Activity",
+      image: Image.asset("assets/plus.png"),
     ).show();
   }
 
