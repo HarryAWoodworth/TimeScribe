@@ -5,7 +5,6 @@ import 'package:time_scribe/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:random_string/random_string.dart' as random;
 
-
 class HomeBodyWidget extends StatefulWidget {
   static HomeBodyWidgetState of(BuildContext context) =>
       context.ancestorStateOfType(const TypeMatcher<HomeBodyWidgetState>());
@@ -59,7 +58,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                               FlatButton(
                                 color: Colors.lightBlue,
                                 onPressed: !timerService.isRunning
-                                    ? timerService.start
+                                    ? (){timerService.start; }
                                     : timerService.stop,
                                 child: Icon(!timerService.isRunning
                                     ? Icons.play_arrow
@@ -125,44 +124,53 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
     // Loop through saved data and construct RaisedButtons
     List<Widget> retList = new List<Widget>();
     _read();
-    debugPrint("LENGTH OF THE _ACTIVITYLIST IS ${_activityList.length}");
     for (ButtonPair p in _activityList) {
-      retList.add(newButton(new Icon(p.iconData), p.name));
+      retList.add(newButton(new Icon(p.iconData), p.name, p.time));
     }
     return retList;
   }
 
   /// Return a new button from the icon and name of an activity
-  Widget newButton(Icon icon, String name) {
+  Widget newButton(Icon icon, String name, int time) {
     return new RaisedButton(
       child: Column(
         children: <Widget>[
           icon,
           Text(name),
+          Text("$time"),
         ],
       ),
       elevation: 4.0,
       splashColor: Colors.lightBlue,
       onPressed: () {
-        _changeActivity(icon, name);
+        _changeActivity(icon, name, time);
       },
     );
   }
 
   /// Change the top row to represent the activity selected
-  _changeActivity(Icon icon, String name) {
+  _changeActivity(Icon icon, String name, int time) {
     setState(() {
+        for (int i = 0; i < _activityList.length; i++) {
+          if (_activityList
+              .elementAt(i)
+              .name == _currActName) {
+            _activityList
+                .elementAt(i)
+                .time += timerService.currentDuration.inSeconds;
+            break;
+          }
+        }
+
       _currActIcon = icon;
       _currActName = name;
       _activeActivity = true;
     });
-    // End timer
     if (timerService.isRunning) {
       timerService.stop();
     }
     // Save time in var
     timerService.reset();
-    // Save timer time to whatever data holder
   }
 
   /// Add an activity, checking for duplicates
@@ -397,10 +405,10 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
   /// Read in the saved preferences (activities) and construct ButtonPairs to
   /// add to _activityList, and add names to _namesList
   _read() async {
-    if(_activityList.isNotEmpty) return;
+    if (_activityList.isNotEmpty) return;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int size = prefs.getInt("Activity_list_size") ?? 0;
-    for(int counter = 0; counter < size; counter++) {
+    for (int counter = 0; counter < size; counter++) {
       addActivityString(prefs.getString("ACTIVITY::$counter"));
     }
     debugPrint("READING!!!!!!!!!");
@@ -419,15 +427,15 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
 
   _save() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("Activity_list_size",_activityList.length);
+    prefs.setInt("Activity_list_size", _activityList.length);
     int counter = 0;
-    for(ButtonPair p in _activityList) {
+    for (ButtonPair p in _activityList) {
       int iconCode = p.iconData.codePoint;
       String name = p.name;
       int time = p.time;
       String combinedString = "$iconCode*$name*$time";
       String key = "ACTIVITY::$counter";
-      prefs.setString(key,combinedString);
+      prefs.setString(key, combinedString);
       counter++;
       debugPrint("Saving Activity with string $combinedString and key $key");
     }
