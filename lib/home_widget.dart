@@ -11,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   // Current tab index
   int _currentIndex = 0;
   static HomeBodyWidget _homeBodyWidget = new HomeBodyWidget();
-  static HistoryBodyWidget _historyBodyWidget = new HistoryBodyWidget(Colors.lightBlue);
+  static HistoryBodyWidget _historyBodyWidget = new HistoryBodyWidget();
 
   // Widgets we want to render based on the tab (2D Array)
   final List<Widget> _children = [

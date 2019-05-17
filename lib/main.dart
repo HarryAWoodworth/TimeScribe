@@ -27,6 +27,10 @@ import 'dart:async';
 ///  https://stackoverflow.com/questions/46639721/how-to-maintain-order-of-insertion-to-shared-preferences
 ///  https://api.dartlang.org/stable/2.3.0/dart-core/Iterator-class.html
 ///  https://stackoverflow.com/questions/13167496/how-do-i-parse-a-string-into-a-number-with-dart
+///  https://github.com/aagarwal1012/Animated-Text-Kit
+///  https://stackoverflow.com/questions/51545768/flutter-vertically-center-column
+///  https://stackoverflow.com/questions/52774921/space-between-columns-children-in-flutter
+///  https://pub.dev/packages/flutter_circular_chart#-readme-tab-
 
 void main() {
   final timerService = TimerService();

@@ -3,7 +3,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:time_scribe/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:random_string/random_string.dart' as random;
 
 class HomeBodyWidget extends StatefulWidget {
   static HomeBodyWidgetState of(BuildContext context) =>
@@ -58,7 +57,7 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
                               FlatButton(
                                 color: Colors.lightBlue,
                                 onPressed: !timerService.isRunning
-                                    ? (){timerService.start; }
+                                    ? timerService.start
                                     : timerService.stop,
                                 child: Icon(!timerService.isRunning
                                     ? Icons.play_arrow
@@ -102,18 +101,6 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
             },
             backgroundColor: Colors.red,
           ),
-          FloatingActionButton(
-            onPressed: () {
-              _read();
-            },
-            backgroundColor: Colors.blue,
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              _save();
-            },
-            backgroundColor: Colors.green,
-          ),
         ],
       ),
     );
@@ -151,26 +138,17 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
   /// Change the top row to represent the activity selected
   _changeActivity(Icon icon, String name, int time) {
     setState(() {
-        for (int i = 0; i < _activityList.length; i++) {
-          if (_activityList
-              .elementAt(i)
-              .name == _currActName) {
-            _activityList
-                .elementAt(i)
-                .time += timerService.currentDuration.inSeconds;
-            break;
-          }
-        }
-
       _currActIcon = icon;
       _currActName = name;
       _activeActivity = true;
     });
+    // End timer
     if (timerService.isRunning) {
       timerService.stop();
     }
     // Save time in var
     timerService.reset();
+    // Save timer time to whatever data holder
   }
 
   /// Add an activity, checking for duplicates
